@@ -12,8 +12,8 @@
     </h2>
     <form action="/messages" method="post">
       <p>
-        Name: <input type="text" name="from" placeholder="Your Name" /> <br />
-        Message: <input type="text" name="text" placeholder="The message..." />
+        Name: <input required="true" type="text" name="from" placeholder="Your Name" /> <br />
+        Message: <input required="true" type="text" name="text" placeholder="The message..." />
         <br />
       </p>
       <button type="submit">
@@ -22,5 +22,25 @@
     </form>
 
     <a href="/messages">See all messages</a>
+
+    <div id="messages-section">
+      <script>
+        setInterval(() => {
+          fetch("/messages")
+           .then(response => response.json())
+           .then(messages => {
+             const messagesSection = document.getElementById("messages-section");
+             messagesSection.innerText = "";
+             messages.forEach(message => {
+               const container = document.createElement("div");
+               container.innerText += `${message.id} - ${message.from} - ${message.text}`;
+               messagesSection.appendChild(container);
+
+             });
+           }, 1000)
+        })
+      </script>
+    </div>
+    
   </body>
 </html>
